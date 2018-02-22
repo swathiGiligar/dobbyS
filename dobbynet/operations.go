@@ -1,11 +1,11 @@
 package dobbynet
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo"
 	"github.com/swathiGiligar/dobbyS/dobbydb"
-	"gopkg.in/mgo.v2/bson"
 )
 
 // //GetAllTasks will fetch all the tasks
@@ -52,17 +52,26 @@ func FindTaskByID(c echo.Context) error {
 }
 
 func CreatTask(c echo.Context) error {
-	task := dobbydb.GetSample()
-	task.ID = bson.NewObjectId()
-	if err := Db.Insert(task); err != nil {
+	task := new(dobbydb.PTask)
+	if err := c.Bind(task); err != nil {
+		fmt.Printf("Error" + err.Error())
+		return c.JSON(http.StatusBadRequest, "Invlid Request")
+	}
+	// task.ID = bson.NewObjectId()
+	if errDb := Db.Insert(*task); errDb != nil {
 		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return c.JSON(http.StatusCreated, task)
 }
 
 func UpdateTask(c echo.Context) error {
-	var task dobbydb.PTask
-	if err := Db.Update(task); err != nil {
+	task := new(dobbydb.PTask)
+	if err := c.Bind(task); err != nil {
+		fmt.Printf("Error" + err.Error())
+		return c.JSON(http.StatusBadRequest, "Invlid Request")
+	}
+	if err := Db.Update(*task); err != nil {
+		fmt.Printf("Error" + err.Error())
 		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return c.JSON(http.StatusOK, task)

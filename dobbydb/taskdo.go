@@ -4,7 +4,7 @@ import "gopkg.in/mgo.v2/bson"
 
 //PTask represents a task
 type PTask struct {
-	ID             bson.ObjectId `bson:"_id" json:"id"`
+	ID             bson.ObjectId `json:"id" bson:"_id,omitempty"`
 	Description    string        `json:"description" bson:"description"`
 	Priority       string        `json:"priority" bson:"priority"`
 	CreatedDate    string        `json:"createdDate" bson:"createdDate"`

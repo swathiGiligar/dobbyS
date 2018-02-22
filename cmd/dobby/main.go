@@ -20,6 +20,7 @@ func main() {
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
 	e.GET("/tasks", dobbynet.GetAllTasks)
-	// e.GET("/create", dobbynet.CreatTask)
+	e.POST("/tasks", dobbynet.CreatTask)
+	e.PUT("/tasks", dobbynet.UpdateTask)
 	e.Logger.Fatal(e.Start(":8080"))
 }
