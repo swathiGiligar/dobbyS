@@ -76,3 +76,14 @@ func UpdateTask(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, task)
 }
+
+func FindTaskByOwner(c echo.Context) error {
+	userName := c.Param("userName")
+	fmt.Printf("The username sent is: " + userName)
+	tasks, err := Db.FindByOwner(userName)
+	if err != nil {
+		fmt.Printf("The username sent is: " + err.Error())
+		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return c.JSON(http.StatusOK, tasks)
+}

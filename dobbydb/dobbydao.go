@@ -1,7 +1,6 @@
 package dobbydb
 
 import (
-	"fmt"
 	"log"
 
 	mgo "gopkg.in/mgo.v2"
@@ -50,7 +49,12 @@ func (m *DobbyDAO) Delete(task PTask) error {
 }
 
 func (m *DobbyDAO) Update(task PTask) error {
-	fmt.Println("My ID" + task.ID)
 	err := db.C(COLLECTION).UpdateId(task.ID, &task)
 	return err
+}
+
+func (m *DobbyDAO) FindByOwner(user string) ([]PTask, error) {
+	var tasks []PTask
+	err := db.C(COLLECTION).Find(bson.M{"owner": user}).All(&tasks)
+	return tasks, err
 }

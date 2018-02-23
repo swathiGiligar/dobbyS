@@ -19,6 +19,7 @@ func main() {
 		AllowOrigins: []string{"*", "http://localhost:8080/tasks"},
 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
 	}))
+	e.GET("/tasks/users/:userName", dobbynet.FindTaskByOwner)
 	e.GET("/tasks", dobbynet.GetAllTasks)
 	e.POST("/tasks", dobbynet.CreatTask)
 	e.PUT("/tasks", dobbynet.UpdateTask)
