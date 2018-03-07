@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/varunamachi/vaali/vsec"
+
 	"github.com/labstack/echo"
 	"github.com/swathiGiligar/dobbyS/dobbydb"
+	"github.com/varunamachi/vaali/vnet"
 )
 
 // //GetAllTasks will fetch all the tasks
@@ -28,16 +31,17 @@ import (
 
 var Db = dobbydb.DobbyDAO{}
 
-func ConnectToTaskDB(server string, database string) {
-	Db.Server = server
-	Db.Database = database
-	Db.Connect()
-}
+// func ConnectToTaskDB(server string, database string) {
+// 	Db.Server = server
+// 	Db.Database = database
+// 	Db.Connect()
+// }
 
 func GetAllTasks(c echo.Context) error {
 	tasks, err := Db.FindAll()
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
+		return c.JSON(http.StatusInternalServerError,
+			"Internal Server Error: "+err.Error())
 	}
 	return c.JSON(http.StatusOK, tasks)
 }
@@ -86,4 +90,41 @@ func FindTaskByOwner(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
 	}
 	return c.JSON(http.StatusOK, tasks)
+}
+
+func GetEndpoints() []*vnet.Endpoint {
+	return []*vnet.Endpoint{
+		&vnet.Endpoint{
+			Method:   echo.POST,
+			URL:      "dobby/tasks",
+			Access:   vsec.Normal,
+			Category: "tasks",
+			Func:     CreatTask,
+			Comment:  "Create new Task",
+		},
+		&vnet.Endpoint{
+			Method:   echo.PUT,
+			URL:      "dobby/tasks",
+			Access:   vsec.Normal,
+			Category: "tasks",
+			Func:     UpdateTask,
+			Comment:  "Update a task",
+		},
+		&vnet.Endpoint{
+			Method:   echo.GET,
+			URL:      "dobby/tasks/users/:userName",
+			Access:   vsec.Normal,
+			Category: "tasks",
+			Func:     FindTaskByOwner,
+			Comment:  "Retrieves a task for given user",
+		},
+		&vnet.Endpoint{
+			Method:   echo.GET,
+			URL:      "dobby/tasks",
+			Access:   vsec.Normal,
+			Category: "tasks",
+			Func:     GetAllTasks,
+			Comment:  "Retrieves all tasks",
+		},
+	}
 }

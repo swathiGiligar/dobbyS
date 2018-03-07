@@ -1,27 +1,50 @@
 package main
 
 import (
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-	"github.com/swathiGiligar/dobbyS/dobbynet"
+	"os"
+
+	"github.com/swathiGiligar/dobbyS"
+	"github.com/varunamachi/vaali/vapp"
+	"github.com/varunamachi/vaali/vcmn"
+	"github.com/varunamachi/vaali/vdb"
+	cli "gopkg.in/urfave/cli.v1"
 )
 
 func main() {
 
-	server := "localhost:27017"
-	database := "tasks_db"
-	dobbynet.ConnectToTaskDB(server, database)
+	app := vapp.NewDefaultApp(
+		"dobby",
+		vcmn.Version{
+			Major: 0,
+			Minor: 0,
+			Patch: 0,
+		},
+		"0",
+		[]cli.Author{
+			cli.Author{
+				Name: "Swathi Giligar",
+			},
+		},
+		"Dobby The Task Manager",
+	)
+	app.Modules = append(app.Modules, dobbyS.NewModule())
+	vdb.SetDefaultDB("tasks_db")
+	app.Exec(os.Args)
 
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"*", "http://localhost:8080/tasks"},
-		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
-	}))
-	e.GET("/tasks/users/:userName", dobbynet.FindTaskByOwner)
-	e.GET("/tasks", dobbynet.GetAllTasks)
-	e.POST("/tasks", dobbynet.CreatTask)
-	e.PUT("/tasks", dobbynet.UpdateTask)
-	e.Logger.Fatal(e.Start(":8080"))
+	// server := "localhost:27017"
+	// database := "tasks_db"
+	// dobbynet.ConnectToTaskDB(server, database)
+
+	// e := echo.New()
+	// e.Use(middleware.Logger())
+	// e.Use(middleware.Recover())
+	// e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+	// 	AllowOrigins: []string{"*", "http://localhost:8080/tasks"},
+	// 	AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
+	// }))
+	// e.GET("/tasks/users/:userName", dobbynet.FindTaskByOwner)
+	// e.GET("/tasks", dobbynet.GetAllTasks)
+	// e.POST("/tasks", dobbynet.CreatTask)
+	// e.PUT("/tasks", dobbynet.UpdateTask)
+	// e.Logger.Fatal(e.Start(":8080"))
 }
