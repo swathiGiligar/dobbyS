@@ -48,10 +48,10 @@ func (m *DobbyDAO) Insert(task PTask) error {
 	return err
 }
 
-func (m *DobbyDAO) Delete(task PTask) error {
+func (m *DobbyDAO) Delete(id string) error {
 	conn := vdb.DefaultMongoConn()
 	defer conn.Close()
-	err := conn.C(COLLECTION).Remove(&task)
+	err := conn.C(COLLECTION).Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	return err
 }
 

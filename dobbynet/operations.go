@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/varunamachi/vaali/vlog"
+
 	"github.com/varunamachi/vaali/vsec"
 
 	"github.com/labstack/echo"
@@ -11,31 +13,7 @@ import (
 	"github.com/varunamachi/vaali/vnet"
 )
 
-// //GetAllTasks will fetch all the tasks
-// func GetAllTasks() {
-// 	e := echo.New()
-// 	e.Use(middleware.Logger())
-// 	e.Use(middleware.Recover())
-// 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-// 		AllowOrigins: []string{"*", "http://localhost:8080/tasks"},
-// 		AllowMethods: []string{echo.GET, echo.PUT, echo.POST, echo.DELETE},
-// 	}))
-// 	e.GET("/tasks", getTask)
-// 	e.Logger.Fatal(e.Start(":8080"))
-// }
-
-// func getTask(c echo.Context) error {
-// 	t := dobbydb.GetSample()
-// 	return c.JSON(http.StatusOK, t)
-// // }
-
 var Db = dobbydb.DobbyDAO{}
-
-// func ConnectToTaskDB(server string, database string) {
-// 	Db.Server = server
-// 	Db.Database = database
-// 	Db.Connect()
-// }
 
 func GetAllTasks(c echo.Context) error {
 	tasks, err := Db.FindAll()
@@ -92,6 +70,17 @@ func FindTaskByOwner(c echo.Context) error {
 	return c.JSON(http.StatusOK, tasks)
 }
 
+func DeleteTaskByID(c echo.Context) error {
+	id := c.Param("taskId")
+	vlog.Info("Dobby:ID", id)
+	err := Db.Delete(id)
+	if err != nil {
+		vlog.LogError("Dobby:Mongo", err)
+		return c.JSON(http.StatusInternalServerError, "Internal Server Error")
+	}
+	return c.JSON(http.StatusOK, "Deleted")
+}
+
 func GetEndpoints() []*vnet.Endpoint {
 	return []*vnet.Endpoint{
 		&vnet.Endpoint{
@@ -125,6 +114,14 @@ func GetEndpoints() []*vnet.Endpoint {
 			Category: "tasks",
 			Func:     GetAllTasks,
 			Comment:  "Retrieves all tasks",
+		},
+		&vnet.Endpoint{
+			Method:   echo.DELETE,
+			URL:      "dobby/tasks/:taskId",
+			Access:   vsec.Normal,
+			Category: "tasks",
+			Func:     DeleteTaskByID,
+			Comment:  "Delete a task",
 		},
 	}
 }
