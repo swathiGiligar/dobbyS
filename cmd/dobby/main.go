@@ -6,13 +6,13 @@ import (
 	"github.com/swathiGiligar/dobbyS"
 	"github.com/varunamachi/vaali/vapp"
 	"github.com/varunamachi/vaali/vcmn"
-	"github.com/varunamachi/vaali/vdb"
+	"github.com/varunamachi/vaali/vmgo"
 	cli "gopkg.in/urfave/cli.v1"
 )
 
 func main() {
 
-	app := vapp.NewDefaultApp(
+	app := vapp.NewWebApp(
 		"dobby",
 		vcmn.Version{
 			Major: 0,
@@ -25,10 +25,11 @@ func main() {
 				Name: "Swathi Giligar",
 			},
 		},
+		true,
 		"Dobby The Task Manager",
 	)
 	app.Modules = append(app.Modules, dobbyS.NewModule())
-	vdb.SetDefaultDB("tasks_db")
+	vmgo.SetDefaultDB("tasks_db")
 	app.Exec(os.Args)
 
 	// server := "localhost:27017"

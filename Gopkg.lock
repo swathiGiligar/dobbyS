@@ -9,21 +9,13 @@
 
 [[projects]]
   name = "github.com/labstack/echo"
-  packages = [
-    ".",
-    "middleware"
-  ]
+  packages = [".","middleware"]
   revision = "b338075a0fc6e1a0683dbf03d09b4957a289e26f"
   version = "3.2.6"
 
 [[projects]]
   name = "github.com/labstack/gommon"
-  packages = [
-    "bytes",
-    "color",
-    "log",
-    "random"
-  ]
+  packages = ["bytes","color","log","random"]
   revision = "57409ada9da0f2afad6664c49502f8c50fbd8476"
   version = "0.2.3"
 
@@ -65,45 +57,20 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/varunamachi/sprw"
-  packages = ["entity"]
-  revision = "49b58012b0d647241d87c3d69b7a7c85937592cf"
-
-[[projects]]
-  branch = "master"
   name = "github.com/varunamachi/vaali"
-  packages = [
-    "vapp",
-    "vcmn",
-    "vdb",
-    "vlog",
-    "vnet",
-    "vsec",
-    "vuman"
-  ]
-  revision = "4c922ebde7b5ea5d55b17394ef35d26c5bfb7593"
+  packages = ["vapp","vcmn","vevt","vlog","vmgo","vnet","vsec","vuman"]
+  revision = "92cac8316e87f238467231cc052e0ef4cbc59799"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = [
-    "acme",
-    "acme/autocert",
-    "bcrypt",
-    "blowfish",
-    "pbkdf2",
-    "scrypt",
-    "ssh/terminal"
-  ]
+  packages = ["acme","acme/autocert","bcrypt","blowfish","pbkdf2","scrypt","ssh/terminal"]
   revision = "91a49db82a88618983a78a06c1cbd4e00ab749ab"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = [
-    "unix",
-    "windows"
-  ]
+  packages = ["unix","windows"]
   revision = "dd2ff4accc098aceecb86b36eaa7829b2a17b1c9"
 
 [[projects]]
@@ -120,29 +87,14 @@
 
 [[projects]]
   name = "gopkg.in/hlandau/passlib.v1"
-  packages = [
-    ".",
-    "abstract",
-    "hash/bcrypt",
-    "hash/bcryptsha256",
-    "hash/scrypt",
-    "hash/scrypt/raw",
-    "hash/sha2crypt",
-    "hash/sha2crypt/raw"
-  ]
+  packages = [".","abstract","hash/bcrypt","hash/bcryptsha256","hash/scrypt","hash/scrypt/raw","hash/sha2crypt","hash/sha2crypt/raw"]
   revision = "933f1c3f63ffb0d17de04c3174f875ae683a33cd"
   version = "v1.0.9"
 
 [[projects]]
   branch = "v2"
   name = "gopkg.in/mgo.v2"
-  packages = [
-    ".",
-    "bson",
-    "internal/json",
-    "internal/sasl",
-    "internal/scram"
-  ]
+  packages = [".","bson","internal/json","internal/sasl","internal/scram"]
   revision = "3f83fa5005286a7fe593b055f0d7771a7dce4655"
 
 [[projects]]
@@ -154,6 +106,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7b2fc922c1177ae591f3ec3a47222a084d1982b6068edf1d273dc18351b3d04f"
+  inputs-digest = "a304eb667e946c1cfc15e14af735a10c2fc67a398c73ded076b613679227f456"
   solver-name = "gps-cdcl"
   solver-version = 1

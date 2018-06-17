@@ -1,7 +1,7 @@
 package dobbydb
 
 import (
-	"github.com/varunamachi/vaali/vdb"
+	"github.com/varunamachi/vaali/vmgo"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -26,7 +26,7 @@ const (
 // }
 
 func (m *DobbyDAO) FindAll() ([]PTask, error) {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	var tasks []PTask = make([]PTask, 0, 100)
 	err := conn.C(COLLECTION).Find(bson.M{}).All(&tasks)
@@ -34,7 +34,7 @@ func (m *DobbyDAO) FindAll() ([]PTask, error) {
 }
 
 func (m *DobbyDAO) FindById(id string) (PTask, error) {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	var task PTask
 	err := conn.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&task)
@@ -42,28 +42,28 @@ func (m *DobbyDAO) FindById(id string) (PTask, error) {
 }
 
 func (m *DobbyDAO) Insert(task PTask) error {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	err := conn.C(COLLECTION).Insert(&task)
 	return err
 }
 
 func (m *DobbyDAO) Delete(id string) error {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	err := conn.C(COLLECTION).Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	return err
 }
 
 func (m *DobbyDAO) Update(task PTask) error {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	err := conn.C(COLLECTION).UpdateId(task.ID, &task)
 	return err
 }
 
 func (m *DobbyDAO) FindByOwner(user string) ([]PTask, error) {
-	conn := vdb.DefaultMongoConn()
+	conn := vmgo.DefaultMongoConn()
 	defer conn.Close()
 	var tasks []PTask
 	err := conn.C(COLLECTION).Find(bson.M{"owner": user}).All(&tasks)
